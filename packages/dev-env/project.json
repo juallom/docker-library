@@ -10,7 +10,10 @@
           "type=registry,ref=ghcr.io/juallom/dev-env:buildcache,mode=max"
         ],
         "metadata": {
-          "images": ["ghcr.io/juallom/dev-env"],
+          "images": [
+            "juallom/dev-env",
+            "ghcr.io/juallom/dev-env"
+          ],
           "tags": [
             "type=schedule",
             "type=semver,pattern={{version}}",

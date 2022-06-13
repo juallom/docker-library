@@ -41,7 +41,10 @@ export default async function (tree: Tree, schema: Schema) {
             `type=registry,ref=ghcr.io/juallom/${schema.name}:buildcache,mode=max`,
           ],
           metadata: {
-            images: [`ghcr.io/juallom/${schema.name}`],
+            images: [
+              `juallom/${schema.name}`,
+              `ghcr.io/juallom/${schema.name}`,
+            ],
             tags: [
               'type=schedule',
               'type=semver,pattern={{version}}',
@@ -64,6 +67,6 @@ export default async function (tree: Tree, schema: Schema) {
     schema
   );
   return () => {
-    exec(`git add ${packageRoot}/Dockerfile ${packageRoot}/project.json`)
+    exec(`git add ${packageRoot}/Dockerfile ${packageRoot}/project.json`);
   };
 }
