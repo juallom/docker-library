@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "docker-package",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Docker image name",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Docker image name"
+    },
+    "from": {
+      "type": "string",
+      "description": "Docker image base image (FROM)",
+      "x-prompt": "Docker image base image (FROM)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Docker image description",
+      "x-prompt": "Docker image description"
+    }
+  },
+  "required": ["name", "from", "description"]
+}

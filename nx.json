@@ -1,7 +1,9 @@
 {
-  "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "docker-library",
+  "workspaceLayout": {
+    "libsDir": "packages"
+  },
   "affected": {
     "defaultBase": "main"
   },
@@ -15,7 +17,7 @@
           "test",
           "e2e"
         ],
-        "accessToken": "YWJmNDg1NjktMjE5ZS00ODQzLWI2ZTItNzY0YTY1YmJlOTBhfHJlYWQtd3JpdGU="
+        "accessToken": "ZDdlODQ4NjktOThmNi00OGIyLWI0NjItMTgyNTkwM2RiNDEwfHJlYWQtd3JpdGU="
       }
     }
   }

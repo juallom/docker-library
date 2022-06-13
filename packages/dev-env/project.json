@@ -1,0 +1,25 @@
+{
+  "name": "dev-env",
+  "targets": {
+    "publish": {
+      "executor": "@nx-tools/nx-docker:build",
+      "options": {
+        "push": true,
+        "cache-from": ["type=registry,ref=ghcr.io/juallom/dev-env:buildcache"],
+        "cache-to": [
+          "type=registry,ref=ghcr.io/juallom/dev-env:buildcache,mode=max"
+        ],
+        "metadata": {
+          "images": ["ghcr.io/juallom/dev-env"],
+          "tags": [
+            "type=schedule",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}",
+            "type=sha"
+          ]
+        }
+      }
+    }
+  }
+}

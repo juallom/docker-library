@@ -2,18 +2,20 @@
   "name": "docker-library",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "docker-package": "./node_modules/.bin/nx workspace-generator docker-package"
+  },
   "private": true,
-  "dependencies": {},
   "devDependencies": {
     "@nrwl/cli": "14.2.4",
+    "@nrwl/devkit": "14.2.4",
+    "@nrwl/js": "14.2.4",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.2.4",
+    "@nx-tools/nx-docker": "2.3.0",
+    "@types/node": "latest",
     "nx": "14.2.4",
     "prettier": "^2.6.2",
     "typescript": "~4.7.2"
-  },
-  "workspaces": [
-    "packages/**"
-  ]
+  }
 }
