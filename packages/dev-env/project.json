@@ -5,7 +5,6 @@
       "executor": "@nx-tools/nx-docker:build",
       "options": {
         "push": true,
-        "cache-from": ["type=registry,ref=ghcr.io/juallom/dev-env:buildcache"],
         "cache-to": [
           "type=registry,ref=ghcr.io/juallom/dev-env:buildcache,mode=max"
         ],
