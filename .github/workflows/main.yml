@@ -43,11 +43,11 @@ jobs:
 
       - uses: actions/github-script@v6
         id: package_name
-        if: ${{ GITHUB_EVENT_NAME == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         with:
           script: return github.ref_name.split('_')[0]
           result-encoding: string
 
       - name: Release image
-        if: ${{ GITHUB_EVENT_NAME == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         run: npx nx "${{ steps.package_name.outputs.result }}" --target=publish
