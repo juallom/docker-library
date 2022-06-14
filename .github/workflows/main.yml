@@ -7,7 +7,7 @@ on:
       - '*_*'
   schedule:
 #    - cron: '5 0 * * 0,3'
-    - cron: '15 5 * * *'
+    - cron: '30 5 * * *'
 env:
   REGISTRY: ghcr.io
 jobs:
@@ -38,16 +38,16 @@ jobs:
         run: npm install
 
       - name: Publish all docker images
-        if: ${{ env.GITHUB_EVENT_NAME == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' }}
         run: npx nx run-many --target=publish --all
 
       - uses: actions/github-script@v6
         id: package_name
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && contains(github.ref_name, '_') }}
         with:
           script: return github.ref_name.split('_')[0]
           result-encoding: string
 
       - name: Release image
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && steps.package_name.outputs.result }}
         run: npx nx "${{ steps.package_name.outputs.result }}" --target=publish
