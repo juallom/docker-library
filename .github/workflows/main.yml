@@ -1,9 +1,13 @@
 name: Publish docker library images to Github Packages (ghcr.io)
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - 'main'
+    tags:
+      - '*_*'
   schedule:
-    - cron: '5 0 * * 0,3'
+#    - cron: '5 0 * * 0,3'
+    - cron: '10 5 * * *'
 env:
   REGISTRY: ghcr.io
 jobs:
@@ -28,10 +32,22 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.PAT_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Install Dependencies'
-        run: npm i
+      - name: Install Dependencies
+        run: npm install
 
-      - name: 'Publish docker images'
+      - name: Publish all docker images
+        if: ${{ env.GITHUB_EVENT_NAME == 'schedule' }}
         run: npx nx run-many --target=publish --all
+
+      - uses: actions/github-script@v6
+        id: package_name
+        if: ${{ env.GITHUB_EVENT_NAME == 'push' }}
+        with:
+          script: return github.ref_name.split('_')[0]
+          result-encoding: string
+
+      - name: Release image
+        if: ${{ env.GITHUB_EVENT_NAME == 'push' && success() }}
+        run: npx nx "${{ steps.package_name.outputs.result }}" --target=publish

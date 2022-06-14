@@ -1,7 +1,12 @@
 FROM ubuntu:latest
-LABEL "name"="dev-env"
-LABEL "maintainer"="Joan Lloret <juallom@gmail.com>"
-LABEL "description"="Executable docker image that contains a consistent development ecosystem"
+
+LABEL "org.opencontainers.image.created"="2022-06-14T01:19:57.689Z"
+LABEL "org.opencontainers.image.authors"="Joan Lloret <juallom@gmail.com>"
+LABEL "org.opencontainers.image.url"="https://github.com/juallom/docker-library/packages/dev-env"
+LABEL "org.opencontainers.image.source"="https://github.com/juallom/docker-library"
+LABEL "org.opencontainers.image.licenses"="MIT"
+LABEL "org.opencontainers.image.title"="dev-env"
+LABEL "org.opencontainers.image.description"="Executable docker image that contains a consistent development ecosystem"
 
 SHELL ["/bin/bash", "-c"]
 RUN touch ~/.bashrc && chmod +x ~/.bashrc

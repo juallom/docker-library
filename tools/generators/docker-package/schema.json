@@ -7,22 +7,47 @@
     "name": {
       "type": "string",
       "description": "Docker image name",
+      "x-prompt": "Docker image name",
       "$default": {
         "$source": "argv",
         "index": 0
-      },
-      "x-prompt": "Docker image name"
+      }
     },
     "from": {
       "type": "string",
       "description": "Docker image base image (FROM)",
-      "x-prompt": "Docker image base image (FROM)"
+      "x-prompt": "Docker image base image (FROM)",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      }
     },
     "description": {
       "type": "string",
       "description": "Docker image description",
-      "x-prompt": "Docker image description"
+      "x-prompt": "Docker image description",
+      "$default": {
+        "$source": "argv",
+        "index": 2
+      }
+    },
+    "github_token": {
+      "type": "string",
+      "description": "Github token used to publish the package for the first time",
+      "x-prompt": "Github token",
+      "$default": {
+        "$source": "argv",
+        "index": 3
+      }
+    },
+    "version": {
+      "type": "string",
+      "description": "Image version",
+      "$default": {
+        "$source": "argv",
+        "index": 4
+      }
     }
   },
-  "required": ["name", "from", "description"]
+  "required": ["name", "from", "description", "github_token"]
 }

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+REGISTRY="ghcr.io"
+REPOSITORY="$REGISTRY/juallom/$SCHEMA_NAME"
+
+cd $ROOT
+git add Dockerfile project.json
+
+echo "$TOKEN" | docker login $REGISTRY -u juallom --password-stdin
+
+docker build -t $SCHEMA_NAME .
+IMAGE_ID=$( docker images -q $SCHEMA_NAME )
+docker tag $IMAGE_ID "$REPOSITORY:latest"
+docker tag $IMAGE_ID "$REPOSITORY:$VERSION"
+docker push $REPOSITORY -a
+docker rmi $IMAGE_ID -f

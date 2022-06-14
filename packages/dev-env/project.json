@@ -5,20 +5,19 @@
       "executor": "@nx-tools/nx-docker:build",
       "options": {
         "push": true,
+        "cache-from": ["type=registry,ref=ghcr.io/juallom/dev-env:buildcache"],
         "cache-to": [
           "type=registry,ref=ghcr.io/juallom/dev-env:buildcache,mode=max"
         ],
         "metadata": {
-          "images": [
-            "juallom/dev-env",
-            "ghcr.io/juallom/dev-env"
-          ],
+          "images": ["ghcr.io/juallom/dev-env"],
           "tags": [
             "type=schedule",
-            "type=semver,pattern={{version}}",
-            "type=semver,pattern={{major}}.{{minor}}",
-            "type=semver,pattern={{major}}",
-            "type=sha"
+            "type=match,pattern=dev-env_(.*),group=1",
+            "type=match,pattern=dev-env_(\\d.\\d),group=1",
+            "type=match,pattern=dev-env_(\\d),group=1",
+            "type=sha",
+            "type=raw,value=latest"
           ]
         }
       }

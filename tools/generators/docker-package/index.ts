@@ -15,11 +15,14 @@ type Schema = {
   name: string;
   from: string;
   description: string;
+  github_token: string;
+  version?: string;
 };
 
 export default async function (tree: Tree, schema: Schema) {
-  await npmPackageGenerator(tree, { name: schema.name });
-  const packageRoot = readProjectConfiguration(tree, schema.name).root;
+  const { name, github_token, version } = schema;
+  await npmPackageGenerator(tree, { name });
+  const packageRoot = readProjectConfiguration(tree, name).root;
 
   // Remove unnecessary files
   tree.delete(`${packageRoot}/index.js`);
@@ -27,7 +30,7 @@ export default async function (tree: Tree, schema: Schema) {
 
   // Add project configuration
   const config: ProjectConfiguration = {
-    name: schema.name,
+    name,
     root: packageRoot,
     targets: {
       publish: {
@@ -35,38 +38,46 @@ export default async function (tree: Tree, schema: Schema) {
         options: {
           push: true,
           'cache-from': [
-            `type=registry,ref=ghcr.io/juallom/${schema.name}:buildcache`,
+            `type=registry,ref=ghcr.io/juallom/${name}:buildcache`,
           ],
           'cache-to': [
-            `type=registry,ref=ghcr.io/juallom/${schema.name}:buildcache,mode=max`,
+            `type=registry,ref=ghcr.io/juallom/${name}:buildcache,mode=max`,
           ],
           metadata: {
-            images: [
-              `juallom/${schema.name}`,
-              `ghcr.io/juallom/${schema.name}`,
-            ],
+            images: [`ghcr.io/juallom/${name}`],
             tags: [
               'type=schedule',
-              'type=semver,pattern={{version}}',
-              'type=semver,pattern={{major}}.{{minor}}',
-              'type=semver,pattern={{major}}',
+              `type=match,pattern=${name}_(.*),group=1`,
+              `type=match,pattern=${name}_(\\d.\\d),group=1`,
+              `type=match,pattern=${name}_(\\d),group=1`,
               'type=sha',
+              'type=raw,value=latest',
             ],
           },
         },
       },
     },
   };
-  updateProjectConfiguration(tree, schema.name, config);
+  updateProjectConfiguration(tree, name, config);
 
   await formatFiles(tree);
-  generateFiles(
-    tree,
-    joinPathFragments(__dirname, './files'),
-    packageRoot,
-    schema
-  );
+  generateFiles(tree, joinPathFragments(__dirname, './files'), packageRoot, {
+    ...schema,
+    created: new Date().toISOString(),
+    version: version || '1.0.0-alpha',
+  });
   return () => {
-    exec(`git add ${packageRoot}/Dockerfile ${packageRoot}/project.json`);
+    const ENV = `ROOT=${packageRoot} SCHEMA_NAME=${name} TOKEN=${github_token} VERSION=${version}`;
+    exec(
+      `${ENV} tools/generators/docker-package/init`,
+      (err, stdout, stderr) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log(`stdout: ${stdout}`);
+          console.log(`stderr: ${stderr}`);
+        }
+      }
+    );
   };
 }
