@@ -45,7 +45,7 @@ jobs:
         id: package_name
         if: ${{ github.event_name == 'push' && contains(github.ref_name, '_') }}
         with:
-          script: return github.ref_name.split('_')[0]
+          script: return process.env.GITHUB_REF_NAME.split('_')[0]
           result-encoding: string
 
       - name: Release image
