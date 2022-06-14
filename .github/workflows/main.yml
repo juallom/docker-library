@@ -51,4 +51,4 @@ jobs:
 
       - name: Release image
         if: ${{ github.event_name == 'push' && steps.package_name.outputs.result }}
-        run: npx nx "${{ steps.package_name.outputs.result }}" --target=publish
+        run: npx nx publish "${{ steps.package_name.outputs.result }}"
