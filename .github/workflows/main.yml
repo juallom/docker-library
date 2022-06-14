@@ -49,5 +49,5 @@ jobs:
           result-encoding: string
 
       - name: Release image
-        if: ${{ env.GITHUB_EVENT_NAME == 'push' && success() }}
+        if: ${{ env.GITHUB_EVENT_NAME == 'push' }}
         run: npx nx "${{ steps.package_name.outputs.result }}" --target=publish
