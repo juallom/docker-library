@@ -7,13 +7,14 @@ on:
       - '*_*'
   schedule:
 #    - cron: '5 0 * * 0,3'
-    - cron: '30 5 * * *'
+    - cron: '45 * * * *'
 env:
   REGISTRY: ghcr.io
 jobs:
   build:
     name: Docker build
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || ( github.event_name == 'push' && contains(github.ref_name, '_') ) }}
     permissions:
       contents: read
       packages: write
