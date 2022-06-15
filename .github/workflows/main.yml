@@ -5,9 +5,9 @@ on:
       - 'main'
     tags:
       - '*_*'
-  schedule:
+#  schedule:
 #    - cron: '5 0 * * 0,3'
-    - cron: '45 * * * *'
+#    - cron: '45 * * * *'
 env:
   REGISTRY: ghcr.io
 jobs:
